@@ -63,7 +63,9 @@ npm run preview  # Preview production build
 ```
 
 ## Deployment
-- **Platform:** Vercel
+- **Live Site:** https://dashboard-preview-ap1kp4qh9-hieus-projects-50272c77.vercel.app
+- **GitHub:** https://github.com/canduchieu/ai-infrastructure-dashboard
+- **Platform:** Vercel (auto-deploys from main)
 - **Build:** `npm run build`
 - **Output:** `dist`
 

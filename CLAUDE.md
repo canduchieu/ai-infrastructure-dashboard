@@ -205,3 +205,9 @@ Add to the appropriate sector array in `src/data/stocksData.js`:
 - `PROJECT_DOCUMENTATION.md` - Complete project details
 - `QUICK_REFERENCE.md` - One-page cheat sheet
 - `CLAUDE.md` - This file (Claude context)
+
+## Deployment
+
+- **Live Site:** https://dashboard-preview-ap1kp4qh9-hieus-projects-50272c77.vercel.app
+- **GitHub:** https://github.com/canduchieu/ai-infrastructure-dashboard
+- **Platform:** Vercel (auto-deploys from main branch)

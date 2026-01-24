@@ -208,13 +208,13 @@ npm run preview
 ## Deployment
 
 ### Vercel
-- **URL:** [To be added after deployment]
+- **URL:** https://dashboard-preview-ap1kp4qh9-hieus-projects-50272c77.vercel.app
 - **Build Command:** `npm run build`
 - **Output Directory:** `dist`
 - **Install Command:** `npm install`
 
 ### GitHub
-- **Repository:** [To be added after push]
+- **Repository:** https://github.com/canduchieu/ai-infrastructure-dashboard
 
 ---
 
