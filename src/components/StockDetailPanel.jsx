@@ -4,6 +4,15 @@ import { useNavigate } from 'react-router-dom';
 
 const StockDetailPanel = ({ stock, sector, isOpen, onClose }) => {
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  // Check if mobile on mount and resize
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   if (!stock || !isOpen) return null;
 
@@ -47,19 +56,28 @@ const StockDetailPanel = ({ stock, sector, isOpen, onClose }) => {
         onClick={onClose}
       />
 
-      {/* Panel */}
+      {/* Panel - Bottom sheet on mobile, side panel on desktop */}
       <div
-        className={`fixed top-0 right-0 h-full w-full max-w-xl bg-gradient-to-b from-slate-900 to-slate-950 border-l border-slate-700/50 shadow-2xl z-50 transform transition-transform duration-300 ease-out overflow-y-auto ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`fixed bg-gradient-to-b from-slate-900 to-slate-950 shadow-2xl z-50 transform transition-transform duration-300 ease-out overflow-y-auto ${
+          isMobile
+            ? `bottom-0 left-0 right-0 max-h-[90vh] rounded-t-2xl border-t border-slate-700/50 ${isOpen ? 'translate-y-0' : 'translate-y-full'}`
+            : `top-0 right-0 h-full w-full max-w-xl border-l border-slate-700/50 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`
         }`}
       >
+        {/* Mobile drag handle */}
+        {isMobile && (
+          <div className="flex justify-center pt-3 pb-1">
+            <div className="w-12 h-1.5 bg-slate-600 rounded-full" />
+          </div>
+        )}
+
         {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-b from-slate-900 via-slate-900 to-transparent pb-4 pt-4 px-6 z-10">
+        <div className={`sticky top-0 bg-gradient-to-b from-slate-900 via-slate-900 to-transparent pb-4 ${isMobile ? 'pt-2 px-4' : 'pt-4 px-6'} z-10`}>
           <div className="flex items-start justify-between mb-4">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-1">
-                <h2 className="text-2xl font-bold text-white">{stock.name}</h2>
-                <span className="px-2 py-0.5 bg-slate-700/50 rounded text-slate-300 text-sm font-mono">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 md:gap-3 mb-1">
+                <h2 className="text-xl md:text-2xl font-bold text-white truncate">{stock.name}</h2>
+                <span className="px-2 py-0.5 bg-slate-700/50 rounded text-slate-300 text-xs md:text-sm font-mono flex-shrink-0">
                   {stock.ticker}
                 </span>
               </div>
@@ -67,7 +85,8 @@ const StockDetailPanel = ({ stock, sector, isOpen, onClose }) => {
             </div>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
+              className="p-3 hover:bg-slate-800 rounded-lg transition-colors -mr-1 min-w-[44px] min-h-[44px] flex items-center justify-center"
+              aria-label="Close panel"
             >
               <X className="w-5 h-5 text-slate-400" />
             </button>
@@ -97,7 +116,7 @@ const StockDetailPanel = ({ stock, sector, isOpen, onClose }) => {
         </div>
 
         {/* Content */}
-        <div className="px-6 pb-6 space-y-5">
+        <div className={`${isMobile ? 'px-4 pb-safe' : 'px-6 pb-6'} space-y-4 md:space-y-5`}>
           {/* Analyst Rating */}
           <div className="flex items-center justify-between p-3 bg-slate-800/40 rounded-xl border border-slate-700/30">
             <span className="text-slate-400">Analyst Rating</span>
@@ -227,14 +246,14 @@ const StockDetailPanel = ({ stock, sector, isOpen, onClose }) => {
           {/* View Full Analysis Button */}
           <button
             onClick={handleViewFullAnalysis}
-            className="w-full py-4 bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-500 hover:to-cyan-500 text-white font-semibold rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-purple-500/20"
+            className="w-full py-4 min-h-[52px] bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-500 hover:to-cyan-500 active:from-purple-700 active:to-cyan-700 text-white font-semibold rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-purple-500/20"
           >
             View Full Analysis
             <ExternalLink className="w-4 h-4" />
           </button>
 
           {/* Disclaimer */}
-          <p className="text-xs text-slate-500 text-center">
+          <p className="text-xs text-slate-500 text-center pb-2">
             For informational purposes only. Not financial advice.
           </p>
         </div>

@@ -10,11 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "cmdk": "^1.1.1",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.0.0",
+    "lightweight-charts": "^5.1.0",
     "lucide-react": "^0.563.0",
+    "papaparse": "^5.5.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.13.0",
-    "recharts": "^3.7.0"
+    "recharts": "^3.7.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

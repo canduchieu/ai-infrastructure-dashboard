@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, PieChart, Pie, Cell, AreaChart, Area, Treemap, ScatterChart, Scatter, ZAxis } from 'recharts';
-import { TrendingUp, TrendingDown, Cpu, Server, HardDrive, Thermometer, Zap, ChevronRight, Star, AlertTriangle, CheckCircle, Info, Filter, Search, ArrowUpRight, BarChart2, Globe, DollarSign, Activity, Cloud, Bot, Car, Shield, Heart, Gem, Bitcoin, Briefcase, Stethoscope } from 'lucide-react';
+import { TrendingUp, TrendingDown, Cpu, Server, HardDrive, Thermometer, Zap, ChevronRight, ChevronDown, Star, AlertTriangle, CheckCircle, Info, Filter, Search, ArrowUpRight, BarChart2, Globe, DollarSign, Activity, Cloud, Bot, Car, Shield, Heart, Gem, Bitcoin, Briefcase, Stethoscope, BookOpen, Code } from 'lucide-react';
 import StockDetailPanel from './components/StockDetailPanel';
 
 // Comprehensive AI Stocks Data
@@ -112,6 +113,18 @@ const stocksData = {
     { name: 'Fetch.ai', ticker: 'FET', marketCap: 3.8, price: 2.2, peRatio: null, forwardPE: null, revenueGrowth: null, analystRating: 'Speculative', priceTarget: 3.5, upside: 59, opportunity: 'Autonomous AI agents on blockchain. Part of ASI Alliance (merged with SingularityNET, Ocean). DeFi and supply chain applications.', risk: 'Highly speculative. Crypto volatility. Unproven at scale.', aiRevenue: 100, score: 58, isCrypto: true },
     { name: 'Bittensor', ticker: 'TAO', marketCap: 3.2, price: 450, peRatio: null, forwardPE: null, revenueGrowth: null, analystRating: 'Speculative', priceTarget: 650, upside: 44, opportunity: 'Decentralized AI network. Incentivizes AI model training. Novel approach to distributed AI.', risk: 'Complex technology. Very speculative. High volatility.', aiRevenue: 100, score: 55, isCrypto: true },
     { name: 'NEAR Protocol', ticker: 'NEAR', marketCap: 7.5, price: 6.5, peRatio: null, forwardPE: null, revenueGrowth: null, analystRating: 'Speculative', priceTarget: 10, upside: 54, opportunity: 'Fast blockchain supporting AI apps. Strong developer ecosystem. AI-focused initiatives.', risk: 'Crypto market risk. Competition from other L1s. Regulatory uncertainty.', aiRevenue: 60, score: 60, isCrypto: true }
+  ],
+  // Vibe Coding Beneficiaries - AI Coding Revolution Thesis
+  vibeCoding: [
+    { name: 'Apple', ticker: 'AAPL', marketCap: 3500, price: 242, peRatio: 32, forwardPE: 28, revenueGrowth: 8, analystRating: 'Strong Buy', priceTarget: 270, upside: 12, opportunity: 'Services revenue hit all-time record $28.8B/quarter (+15% YoY). App Store benefits directly from increased app development.', risk: 'Regulatory pressure in EU reducing App Store fees. Premium valuation.', aiRevenue: 15, score: 85, order: '2nd', isThesis: true },
+    { name: 'Adyen', ticker: 'ADYEN.AS', marketCap: 52, price: 1580, peRatio: 45, forwardPE: 38, revenueGrowth: 20, analystRating: 'Buy', priceTarget: 1850, upside: 17, opportunity: 'Platforms segment grew +50% YoY - fastest growing segment. Platform customers nearly doubled to 212,000.', risk: 'Competition from Stripe. Premium European fintech valuation.', aiRevenue: 20, score: 82, order: '2nd', isThesis: true },
+    { name: 'Shopify', ticker: 'SHOP', marketCap: 135, price: 108, peRatio: 85, forwardPE: 55, revenueGrowth: 25, analystRating: 'Buy', priceTarget: 130, upside: 20, opportunity: 'E-commerce app platform with 12,320 apps. 87% of merchants use apps. Embraced vibe coding with Summer 25 Edition.', risk: 'SMB exposure in economic slowdown. High valuation.', aiRevenue: 25, score: 78, order: '2nd', isThesis: true },
+    { name: 'MongoDB', ticker: 'MDB', marketCap: 25, price: 235, peRatio: null, forwardPE: 50, revenueGrowth: 19, analystRating: 'Buy', priceTarget: 290, upside: 23, opportunity: 'Atlas cloud database grew +30% YoY (accelerating). Becoming default database for AI applications.', risk: 'Cloud provider competition. Valuation stretched.', aiRevenue: 45, score: 84, order: '3rd', isThesis: true },
+    { name: 'Cloudflare', ticker: 'NET', marketCap: 45, price: 175, peRatio: null, forwardPE: 70, revenueGrowth: 31, analystRating: 'Strong Buy', priceTarget: 220, upside: 26, opportunity: 'Revenue growth re-accelerating (31% YoY). Workers developer platform driving largest enterprise deals.', risk: 'Still not GAAP profitable. Competition from hyperscalers.', aiRevenue: 35, score: 86, order: '3rd', isThesis: true },
+    { name: 'Datadog', ticker: 'DDOG', marketCap: 42, price: 155, peRatio: null, forwardPE: 52, revenueGrowth: 28, analystRating: 'Strong Buy', priceTarget: 195, upside: 26, opportunity: 'AI observability leader with +28% YoY growth. AI-native customer revenue doubled to 12% of total.', risk: 'Premium valuation. Competitive observability market.', aiRevenue: 40, score: 84, order: '3rd', isThesis: true },
+    { name: 'Twilio', ticker: 'TWLO', marketCap: 15, price: 85, peRatio: null, forwardPE: 25, revenueGrowth: 15, analystRating: 'Buy', priceTarget: 105, upside: 24, opportunity: 'Communications APIs essential for every app. Voice AI customers grew 60%. 392,000+ active accounts.', risk: 'Competition from cheaper alternatives. Margin pressure.', aiRevenue: 30, score: 78, order: '3rd', isThesis: true },
+    { name: 'GitLab', ticker: 'GTLB', marketCap: 9, price: 65, peRatio: null, forwardPE: 55, revenueGrowth: 29, analystRating: 'Buy', priceTarget: 80, upside: 23, opportunity: 'DevSecOps platform with +29% YoY growth. More vibe-coded apps = more code to manage.', risk: 'Competition from GitHub. Path to profitability uncertain.', aiRevenue: 35, score: 76, order: '3rd', isThesis: true },
+    { name: 'Atlassian', ticker: 'TEAM', marketCap: 55, price: 230, peRatio: 85, forwardPE: 45, revenueGrowth: 21, analystRating: 'Buy', priceTarget: 280, upside: 22, opportunity: 'Collaboration and project management essential as app development scales. +21% YoY revenue growth.', risk: 'Premium valuation. Competition from Monday.com, Notion.', aiRevenue: 30, score: 76, order: '3rd', isThesis: true }
   ]
 };
 
@@ -129,7 +142,8 @@ const sectorSummary = [
   { sector: 'Healthcare AI', avgGrowth: 32, avgUpside: 23, avgScore: 73, totalMarketCap: 239, count: 5, color: '#F43F5E' },
   { sector: 'Commodities', avgGrowth: 0, avgUpside: 38, avgScore: 75, totalMarketCap: 277, count: 6, color: '#A855F7' },
   { sector: 'AI ETFs', avgGrowth: 0, avgUpside: 22, avgScore: 73, totalMarketCap: 12, count: 5, color: '#6366F1' },
-  { sector: 'AI Crypto', avgGrowth: 0, avgUpside: 52, avgScore: 59, totalMarketCap: 20, count: 4, color: '#FBBF24' }
+  { sector: 'AI Crypto', avgGrowth: 0, avgUpside: 52, avgScore: 59, totalMarketCap: 20, count: 4, color: '#FBBF24' },
+  { sector: 'Vibe Coding', avgGrowth: 24, avgUpside: 21, avgScore: 81, totalMarketCap: 3878, count: 9, color: '#22D3EE', isThesis: true }
 ];
 
 // Top opportunities across all sectors
@@ -180,22 +194,22 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 const MetricCard = ({ title, value, change, icon: Icon, trend, subtitle }) => (
-  <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-xl p-5 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/5">
-    <div className="flex items-start justify-between">
-      <div>
-        <p className="text-slate-400 text-xs uppercase tracking-wider font-medium">{title}</p>
-        <p className="text-2xl font-bold text-white mt-1">{value}</p>
-        {subtitle && <p className="text-slate-500 text-xs mt-1">{subtitle}</p>}
+  <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-xl p-3 md:p-5 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/5">
+    <div className="flex items-start justify-between gap-2">
+      <div className="min-w-0 flex-1">
+        <p className="text-slate-400 text-[10px] md:text-xs uppercase tracking-wider font-medium truncate">{title}</p>
+        <p className="text-xl md:text-2xl font-bold text-white mt-0.5 md:mt-1">{value}</p>
+        {subtitle && <p className="text-slate-500 text-[10px] md:text-xs mt-0.5 md:mt-1 truncate">{subtitle}</p>}
       </div>
-      <div className={`p-2.5 rounded-lg ${trend === 'up' ? 'bg-emerald-500/10' : trend === 'down' ? 'bg-red-500/10' : 'bg-slate-700/50'}`}>
-        <Icon className={`w-5 h-5 ${trend === 'up' ? 'text-emerald-400' : trend === 'down' ? 'text-red-400' : 'text-slate-400'}`} />
+      <div className={`p-2 md:p-2.5 rounded-lg flex-shrink-0 ${trend === 'up' ? 'bg-emerald-500/10' : trend === 'down' ? 'bg-red-500/10' : 'bg-slate-700/50'}`}>
+        <Icon className={`w-4 h-4 md:w-5 md:h-5 ${trend === 'up' ? 'text-emerald-400' : trend === 'down' ? 'text-red-400' : 'text-slate-400'}`} />
       </div>
     </div>
     {change && (
-      <div className={`flex items-center mt-3 text-sm ${change > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-        {change > 0 ? <TrendingUp className="w-4 h-4 mr-1" /> : <TrendingDown className="w-4 h-4 mr-1" />}
+      <div className={`flex items-center mt-2 md:mt-3 text-xs md:text-sm ${change > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+        {change > 0 ? <TrendingUp className="w-3 h-3 md:w-4 md:h-4 mr-1" /> : <TrendingDown className="w-3 h-3 md:w-4 md:h-4 mr-1" />}
         <span>{change > 0 ? '+' : ''}{change}%</span>
-        <span className="text-slate-500 ml-2">vs last quarter</span>
+        <span className="text-slate-500 ml-1 md:ml-2 hidden sm:inline">vs last quarter</span>
       </div>
     )}
   </div>
@@ -209,67 +223,67 @@ const StockCard = ({ stock, showDetails = false, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl p-4 border border-slate-700/40 hover:border-purple-500/30 transition-all duration-300 group cursor-pointer hover:scale-[1.02] hover:shadow-lg hover:shadow-purple-500/10">
-      <div className="flex items-start justify-between mb-3">
-        <div>
-          <div className="flex items-center gap-2">
-            <h4 className="text-white font-semibold text-base">{stock.name}</h4>
-            <span className="text-slate-500 text-sm">{stock.ticker}</span>
+      className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl p-3 md:p-4 border border-slate-700/40 hover:border-purple-500/30 active:border-purple-500/50 transition-all duration-300 group cursor-pointer md:hover:scale-[1.02] active:scale-[0.98] md:hover:shadow-lg md:hover:shadow-purple-500/10">
+      <div className="flex items-start justify-between mb-2 md:mb-3 gap-2">
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-1.5 md:gap-2">
+            <h4 className="text-white font-semibold text-sm md:text-base truncate">{stock.name}</h4>
+            <span className="text-slate-500 text-xs md:text-sm flex-shrink-0">{stock.ticker}</span>
           </div>
-          <div className="flex items-center gap-3 mt-1">
-            <span className={`text-xs font-medium ${ratingColor}`}>{stock.analystRating}</span>
-            <span className="text-slate-500 text-xs">Score: {stock.score}/100</span>
+          <div className="flex items-center gap-2 md:gap-3 mt-0.5 md:mt-1">
+            <span className={`text-[10px] md:text-xs font-medium ${ratingColor}`}>{stock.analystRating}</span>
+            <span className="text-slate-500 text-[10px] md:text-xs">Score: {stock.score}</span>
           </div>
         </div>
-        <div className="text-right">
-          <p className="text-white font-bold">${stock.price}</p>
-          <p className={`text-xs ${stock.upside > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-            {stock.upside > 0 ? '+' : ''}{stock.upside}% upside
+        <div className="text-right flex-shrink-0">
+          <p className="text-white font-bold text-sm md:text-base">${stock.price}</p>
+          <p className={`text-[10px] md:text-xs ${stock.upside > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+            {stock.upside > 0 ? '+' : ''}{stock.upside}%
           </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-2 text-xs mb-3">
-        <div className="bg-slate-700/30 rounded-lg p-2">
-          <p className="text-slate-500">Market Cap</p>
+      <div className="grid grid-cols-3 gap-1.5 md:gap-2 text-[10px] md:text-xs mb-2 md:mb-3">
+        <div className="bg-slate-700/30 rounded-lg p-1.5 md:p-2">
+          <p className="text-slate-500">Mkt Cap</p>
           <p className="text-white font-medium">${stock.marketCap >= 1000 ? (stock.marketCap / 1000).toFixed(1) + 'T' : stock.marketCap + 'B'}</p>
         </div>
-        <div className="bg-slate-700/30 rounded-lg p-2">
+        <div className="bg-slate-700/30 rounded-lg p-1.5 md:p-2">
           <p className="text-slate-500">Fwd P/E</p>
           <p className="text-white font-medium">{stock.forwardPE || 'N/A'}</p>
         </div>
-        <div className="bg-slate-700/30 rounded-lg p-2">
-          <p className="text-slate-500">Rev Growth</p>
+        <div className="bg-slate-700/30 rounded-lg p-1.5 md:p-2">
+          <p className="text-slate-500">Growth</p>
           <p className="text-emerald-400 font-medium">{stock.revenueGrowth ? `+${stock.revenueGrowth}%` : 'N/A'}</p>
         </div>
       </div>
 
       {showDetails && (
         <>
-          <div className="mb-3">
-            <p className="text-slate-400 text-xs mb-1 flex items-center gap-1">
+          <div className="mb-2 md:mb-3">
+            <p className="text-slate-400 text-[10px] md:text-xs mb-1 flex items-center gap-1">
               <CheckCircle className="w-3 h-3 text-emerald-400" /> Opportunity
             </p>
-            <p className="text-slate-300 text-xs leading-relaxed">{stock.opportunity}</p>
+            <p className="text-slate-300 text-[10px] md:text-xs leading-relaxed line-clamp-3 md:line-clamp-none">{stock.opportunity}</p>
           </div>
           <div>
-            <p className="text-slate-400 text-xs mb-1 flex items-center gap-1">
+            <p className="text-slate-400 text-[10px] md:text-xs mb-1 flex items-center gap-1">
               <AlertTriangle className="w-3 h-3 text-amber-400" /> Risk
             </p>
-            <p className="text-slate-300 text-xs leading-relaxed">{stock.risk}</p>
+            <p className="text-slate-300 text-[10px] md:text-xs leading-relaxed line-clamp-2 md:line-clamp-none">{stock.risk}</p>
           </div>
         </>
       )}
 
-      <div className="mt-3 pt-3 border-t border-slate-700/30">
-        <div className="w-full bg-slate-700/50 rounded-full h-1.5">
+      <div className="mt-2 md:mt-3 pt-2 md:pt-3 border-t border-slate-700/30">
+        <div className="w-full bg-slate-700/50 rounded-full h-1 md:h-1.5">
           <div
-            className="h-1.5 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500"
+            className="h-1 md:h-1.5 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500"
             style={{ width: `${stock.score}%` }}
           />
         </div>
-        <div className="flex justify-between mt-1 text-xs text-slate-500">
-          <span>Investment Score</span>
+        <div className="flex justify-between mt-1 text-[10px] md:text-xs text-slate-500">
+          <span>Score</span>
           <span className="text-purple-400 font-medium">{stock.score}/100</span>
         </div>
       </div>
@@ -280,14 +294,14 @@ const StockCard = ({ stock, showDetails = false, onClick }) => {
 const SectorTab = ({ sector, isActive, onClick, color }) => (
   <button
     onClick={onClick}
-    className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
+    className={`px-3 md:px-4 py-2.5 md:py-2.5 rounded-lg text-xs md:text-sm font-medium transition-all duration-200 flex items-center gap-1.5 md:gap-2 min-h-[44px] whitespace-nowrap ${
       isActive
         ? 'bg-gradient-to-r from-purple-600 to-cyan-600 text-white shadow-lg shadow-purple-500/20'
-        : 'bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700/50'
+        : 'bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700/50 active:bg-slate-700'
     }`}
   >
-    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
-    {sector}
+    <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
+    <span className="truncate max-w-[100px] md:max-w-none">{sector}</span>
   </button>
 );
 
@@ -298,6 +312,7 @@ export default function AIDashboard() {
   const [showDetails, setShowDetails] = useState(true);
   const [selectedStock, setSelectedStock] = useState(null);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [topOppsExpanded, setTopOppsExpanded] = useState(false); // Collapsed by default on mobile
 
   const handleStockClick = (stock) => {
     setSelectedStock(stock);
@@ -322,7 +337,8 @@ export default function AIDashboard() {
     { key: 'healthcareAI', name: 'Healthcare AI', icon: Stethoscope, color: '#F43F5E' },
     { key: 'commodities', name: 'Commodities', icon: Gem, color: '#A855F7' },
     { key: 'etfs', name: 'AI ETFs', icon: Briefcase, color: '#6366F1' },
-    { key: 'crypto', name: 'AI Crypto', icon: Bitcoin, color: '#FBBF24' }
+    { key: 'crypto', name: 'AI Crypto', icon: Bitcoin, color: '#FBBF24' },
+    { key: 'vibeCoding', name: 'Vibe Coding', icon: Code, color: '#22D3EE', isThesis: true }
   ];
 
   const currentSectorData = stocksData[activeSector] || [];
@@ -348,52 +364,108 @@ export default function AIDashboard() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white p-4 md:p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white p-3 md:p-4 lg:p-6 pb-safe">
       {/* Header */}
       <div className="max-w-[1800px] mx-auto">
-        <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-cyan-500 flex items-center justify-center">
-                <Activity className="w-6 h-6 text-white" />
+        <div className="flex flex-col gap-3 md:gap-4 mb-4 md:mb-6">
+          {/* Top row: Logo + Title + Research button */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 md:gap-3 min-w-0">
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-purple-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
+                <Activity className="w-5 h-5 md:w-6 md:h-6 text-white" />
               </div>
-              <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent">
-                AI Infrastructure Investment Dashboard
-              </h1>
+              <div className="min-w-0">
+                <h1 className="text-lg md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent truncate">
+                  AI Infrastructure Investment
+                </h1>
+                <p className="text-slate-400 text-xs md:text-sm hidden md:block">Deep research analysis across 90+ assets in 14 AI sectors</p>
+              </div>
             </div>
-            <p className="text-slate-400 text-sm md:text-base">Deep research analysis across 80+ assets in 13 AI sectors</p>
+            <div className="flex items-center gap-2">
+              {/* Navigation Links - Hidden on mobile */}
+              <div className="hidden lg:flex items-center gap-1">
+                <Link
+                  to="/screener"
+                  className="px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all"
+                >
+                  Screener
+                </Link>
+                <Link
+                  to="/earnings"
+                  className="px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all"
+                >
+                  Earnings
+                </Link>
+                <Link
+                  to="/compare"
+                  className="px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all"
+                >
+                  Compare
+                </Link>
+              </div>
+              <Link
+                to="/research"
+                className="bg-gradient-to-r from-purple-600/20 to-cyan-600/20 border border-purple-500/30 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm text-white hover:from-purple-600/30 hover:to-cyan-600/30 active:from-purple-600/40 active:to-cyan-600/40 transition-all flex items-center gap-1.5 md:gap-2 min-h-[44px] flex-shrink-0"
+              >
+                <BookOpen className="w-4 h-4" />
+                <span className="hidden sm:inline">Research</span>
+              </Link>
+            </div>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="relative">
+
+          {/* Second row: Search + Toggle + Navigation Links (mobile-optimized) */}
+          <div className="flex items-center gap-2 md:gap-3">
+            <div className="relative flex-1 md:flex-none">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
               <input
                 type="text"
-                placeholder="Search stocks..."
+                placeholder="Search or press ⌘K..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-slate-800/50 border border-slate-700/50 rounded-lg pl-10 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-purple-500/50 w-48 md:w-64"
+                className="w-full md:w-64 bg-slate-800/50 border border-slate-700/50 rounded-lg pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-purple-500/50 min-h-[44px]"
               />
+            </div>
+            {/* Mobile Navigation Links */}
+            <div className="lg:hidden flex items-center gap-1 overflow-x-auto scrollbar-hide">
+              <Link
+                to="/screener"
+                className="px-2 py-2 text-xs text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all whitespace-nowrap"
+              >
+                Screener
+              </Link>
+              <Link
+                to="/earnings"
+                className="px-2 py-2 text-xs text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all whitespace-nowrap"
+              >
+                Earnings
+              </Link>
+              <Link
+                to="/compare"
+                className="px-2 py-2 text-xs text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all whitespace-nowrap"
+              >
+                Compare
+              </Link>
             </div>
             <button
               onClick={() => setShowDetails(!showDetails)}
-              className="bg-slate-800/50 border border-slate-700/50 rounded-lg px-4 py-2 text-sm text-slate-400 hover:text-white hover:border-slate-600/50 transition-colors flex items-center gap-2"
+              className="bg-slate-800/50 border border-slate-700/50 rounded-lg px-3 md:px-4 py-2.5 text-sm text-slate-400 hover:text-white hover:border-slate-600/50 active:bg-slate-700/50 transition-colors flex items-center gap-2 min-h-[44px] flex-shrink-0"
             >
               <Info className="w-4 h-4" />
-              {showDetails ? 'Less' : 'More'}
+              <span className="hidden sm:inline">{showDetails ? 'Less' : 'More'}</span>
             </button>
           </div>
         </div>
 
-        {/* Main Navigation */}
-        <div className="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-slate-700">
+        {/* Main Navigation - Horizontal scroll on mobile */}
+        <div className="flex gap-1.5 md:gap-2 mb-4 md:mb-6 overflow-x-auto pb-2 scrollbar-hide scroll-smooth-x -mx-3 px-3 md:mx-0 md:px-0">
           {['overview', 'sectors', 'opportunities', 'analysis'].map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-5 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${
+              className={`px-4 md:px-5 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all min-h-[44px] flex-shrink-0 ${
                 activeTab === tab
                   ? 'bg-gradient-to-r from-purple-600/20 to-cyan-600/20 text-white border border-purple-500/30'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800/30'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800/30 active:bg-slate-800/50'
               }`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -437,43 +509,69 @@ export default function AIDashboard() {
               />
             </div>
 
-            {/* Top Opportunities */}
-            <div className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-sm rounded-2xl p-5 border border-slate-700/30 mb-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                  <Star className="w-5 h-5 text-amber-400" />
-                  Top Investment Opportunities
-                </h2>
-                <span className="text-xs text-slate-500">Ranked by opportunity score</span>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {topOpportunities.slice(0, 8).map((opp, i) => (
-                  <div key={opp.ticker} className="bg-slate-800/40 rounded-xl p-4 border border-slate-700/30 hover:border-purple-500/30 transition-all group">
-                    <div className="flex items-start justify-between mb-2">
-                      <div>
-                        <span className="text-xs text-slate-500">#{i + 1}</span>
-                        <h4 className="text-white font-semibold">{opp.name}</h4>
-                        <span className="text-slate-500 text-xs">{opp.ticker}</span>
+            {/* Top Opportunities - Collapsible on Mobile */}
+            <div className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-sm rounded-xl md:rounded-2xl border border-slate-700/30 mb-4 md:mb-6 overflow-hidden">
+              {/* Header - Clickable on mobile */}
+              <button
+                onClick={() => setTopOppsExpanded(!topOppsExpanded)}
+                className="w-full p-3 md:p-5 flex items-center justify-between md:cursor-default"
+              >
+                <div className="flex items-center gap-2">
+                  <Star className="w-4 h-4 md:w-5 md:h-5 text-amber-400" />
+                  <h2 className="text-base md:text-lg font-semibold text-white">
+                    Top Opportunities
+                  </h2>
+                  <span className="text-[10px] md:text-xs text-slate-500 hidden sm:inline">Ranked by score</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {/* Preview tickers when collapsed (mobile only) */}
+                  {!topOppsExpanded && (
+                    <span className="text-xs text-purple-400 md:hidden">
+                      {topOpportunities.slice(0, 3).map(o => o.ticker).join(', ')}...
+                    </span>
+                  )}
+                  {/* Chevron - only visible on mobile */}
+                  <ChevronDown
+                    className={`w-5 h-5 text-slate-400 md:hidden transition-transform duration-200 ${topOppsExpanded ? 'rotate-180' : ''}`}
+                  />
+                </div>
+              </button>
+
+              {/* Content - Collapsible on mobile, always visible on desktop */}
+              <div className={`grid transition-all duration-200 ease-out md:!grid-rows-[1fr] md:!opacity-100 ${
+                topOppsExpanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+              }`}>
+                <div className="overflow-hidden">
+                  <div className="px-3 md:px-5 pb-3 md:pb-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+                    {topOpportunities.slice(0, 8).map((opp, i) => (
+                      <div key={opp.ticker} className="bg-slate-800/40 rounded-xl p-3 md:p-4 border border-slate-700/30 hover:border-purple-500/30 active:border-purple-500/50 transition-all group">
+                        <div className="flex items-start justify-between mb-1.5 md:mb-2">
+                          <div>
+                            <span className="text-[10px] md:text-xs text-slate-500">#{i + 1}</span>
+                            <h4 className="text-white font-semibold text-sm md:text-base">{opp.name}</h4>
+                            <span className="text-slate-500 text-[10px] md:text-xs">{opp.ticker}</span>
+                          </div>
+                          <div className="bg-gradient-to-r from-purple-500/20 to-cyan-500/20 rounded-lg px-1.5 md:px-2 py-0.5 md:py-1">
+                            <span className="text-xs md:text-sm font-bold text-transparent bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text">{opp.score}</span>
+                          </div>
+                        </div>
+                        <p className="text-slate-400 text-[10px] md:text-xs leading-relaxed line-clamp-2 md:line-clamp-none">{opp.reason}</p>
+                        <div className="mt-1.5 md:mt-2 pt-1.5 md:pt-2 border-t border-slate-700/30">
+                          <span className="text-[10px] md:text-xs px-1.5 md:px-2 py-0.5 rounded-full bg-slate-700/50 text-slate-300">{opp.sector}</span>
+                        </div>
                       </div>
-                      <div className="bg-gradient-to-r from-purple-500/20 to-cyan-500/20 rounded-lg px-2 py-1">
-                        <span className="text-sm font-bold text-transparent bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text">{opp.score}</span>
-                      </div>
-                    </div>
-                    <p className="text-slate-400 text-xs leading-relaxed">{opp.reason}</p>
-                    <div className="mt-2 pt-2 border-t border-slate-700/30">
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-slate-700/50 text-slate-300">{opp.sector}</span>
-                    </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
 
             {/* Charts Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
               {/* Sector Performance Radar */}
-              <div className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-sm rounded-2xl p-5 border border-slate-700/30">
-                <h3 className="text-lg font-semibold text-white mb-4">Sector Performance Radar</h3>
-                <ResponsiveContainer width="100%" height={300}>
+              <div className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 md:p-5 border border-slate-700/30">
+                <h3 className="text-base md:text-lg font-semibold text-white mb-3 md:mb-4">Sector Performance Radar</h3>
+                <ResponsiveContainer width="100%" height={220} className="md:!h-[300px]">
                   <RadarChart data={radarData}>
                     <PolarGrid stroke="#334155" />
                     <PolarAngleAxis dataKey="sector" tick={{ fill: '#94a3b8', fontSize: 11 }} />
@@ -484,17 +582,17 @@ export default function AIDashboard() {
                     <Tooltip content={<CustomTooltip />} />
                   </RadarChart>
                 </ResponsiveContainer>
-                <div className="flex justify-center gap-6 mt-2">
-                  <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-purple-500" /><span className="text-xs text-slate-400">Growth %</span></div>
-                  <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-cyan-500" /><span className="text-xs text-slate-400">Score</span></div>
-                  <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-emerald-500" /><span className="text-xs text-slate-400">Upside %</span></div>
+                <div className="flex flex-wrap justify-center gap-3 md:gap-6 mt-2">
+                  <div className="flex items-center gap-1.5 md:gap-2"><div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-purple-500" /><span className="text-[10px] md:text-xs text-slate-400">Growth</span></div>
+                  <div className="flex items-center gap-1.5 md:gap-2"><div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-cyan-500" /><span className="text-[10px] md:text-xs text-slate-400">Score</span></div>
+                  <div className="flex items-center gap-1.5 md:gap-2"><div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-emerald-500" /><span className="text-[10px] md:text-xs text-slate-400">Upside</span></div>
                 </div>
               </div>
 
               {/* Market Cap Distribution */}
-              <div className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-sm rounded-2xl p-5 border border-slate-700/30">
-                <h3 className="text-lg font-semibold text-white mb-4">Market Cap by Sector ($B)</h3>
-                <ResponsiveContainer width="100%" height={300}>
+              <div className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 md:p-5 border border-slate-700/30">
+                <h3 className="text-base md:text-lg font-semibold text-white mb-3 md:mb-4">Market Cap by Sector</h3>
+                <ResponsiveContainer width="100%" height={220} className="md:!h-[300px]">
                   <BarChart data={sectorSummary} layout="vertical">
                     <CartesianGrid strokeDasharray="3 3" stroke="#334155" horizontal={false} />
                     <XAxis type="number" tick={{ fill: '#94a3b8', fontSize: 11 }} />
@@ -511,10 +609,10 @@ export default function AIDashboard() {
             </div>
 
             {/* Opportunity Matrix Scatter */}
-            <div className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-sm rounded-2xl p-5 border border-slate-700/30 mb-6">
-              <h3 className="text-lg font-semibold text-white mb-4">Investment Opportunity Matrix</h3>
-              <p className="text-slate-400 text-sm mb-4">Score vs Upside Potential (bubble size = market cap)</p>
-              <ResponsiveContainer width="100%" height={350}>
+            <div className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 md:p-5 border border-slate-700/30 mb-4 md:mb-6">
+              <h3 className="text-base md:text-lg font-semibold text-white mb-2 md:mb-4">Investment Opportunity Matrix</h3>
+              <p className="text-slate-400 text-xs md:text-sm mb-3 md:mb-4">Score vs Upside (bubble = market cap)</p>
+              <ResponsiveContainer width="100%" height={280} className="md:!h-[350px]">
                 <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
                   <XAxis type="number" dataKey="upside" name="Upside" unit="%" tick={{ fill: '#94a3b8', fontSize: 11 }} domain={[-30, 100]} label={{ value: 'Upside Potential %', position: 'bottom', fill: '#64748b', fontSize: 12 }} />
@@ -543,8 +641,8 @@ export default function AIDashboard() {
 
         {activeTab === 'sectors' && (
           <>
-            {/* Sector Tabs */}
-            <div className="flex flex-wrap gap-2 mb-6">
+            {/* Sector Tabs - Horizontal scroll on mobile */}
+            <div className="flex gap-1.5 md:gap-2 mb-4 md:mb-6 overflow-x-auto pb-2 scrollbar-hide scroll-smooth-x -mx-3 px-3 md:mx-0 md:px-0 md:flex-wrap">
               {sectors.map(sector => (
                 <SectorTab
                   key={sector.key}
@@ -557,34 +655,34 @@ export default function AIDashboard() {
             </div>
 
             {/* Sector Header */}
-            <div className="bg-gradient-to-r from-purple-600/10 to-cyan-600/10 rounded-2xl p-5 border border-purple-500/20 mb-6">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="bg-gradient-to-r from-purple-600/10 to-cyan-600/10 rounded-xl md:rounded-2xl p-3 md:p-5 border border-purple-500/20 mb-4 md:mb-6">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 md:gap-4">
                 <div>
-                  <h2 className="text-xl font-bold text-white flex items-center gap-3">
-                    {React.createElement(sectors.find(s => s.key === activeSector)?.icon || Cpu, { className: 'w-6 h-6' })}
+                  <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2 md:gap-3">
+                    {React.createElement(sectors.find(s => s.key === activeSector)?.icon || Cpu, { className: 'w-5 h-5 md:w-6 md:h-6' })}
                     {sectors.find(s => s.key === activeSector)?.name}
                   </h2>
-                  <p className="text-slate-400 text-sm mt-1">{filteredStocks.length} companies tracked</p>
+                  <p className="text-slate-400 text-xs md:text-sm mt-0.5 md:mt-1">{filteredStocks.length} companies tracked</p>
                 </div>
-                <div className="flex gap-4">
+                <div className="flex gap-3 md:gap-4">
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-white">{sectorSummary.find(s => s.sector.includes(sectors.find(sec => sec.key === activeSector)?.name.split(' ')[0]))?.avgGrowth || 0}%</p>
-                    <p className="text-slate-500 text-xs">Avg Growth</p>
+                    <p className="text-lg md:text-2xl font-bold text-white">{sectorSummary.find(s => s.sector.includes(sectors.find(sec => sec.key === activeSector)?.name.split(' ')[0]))?.avgGrowth || 0}%</p>
+                    <p className="text-slate-500 text-[10px] md:text-xs">Growth</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-emerald-400">+{sectorSummary.find(s => s.sector.includes(sectors.find(sec => sec.key === activeSector)?.name.split(' ')[0]))?.avgUpside || 0}%</p>
-                    <p className="text-slate-500 text-xs">Avg Upside</p>
+                    <p className="text-lg md:text-2xl font-bold text-emerald-400">+{sectorSummary.find(s => s.sector.includes(sectors.find(sec => sec.key === activeSector)?.name.split(' ')[0]))?.avgUpside || 0}%</p>
+                    <p className="text-slate-500 text-[10px] md:text-xs">Upside</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-purple-400">{sectorSummary.find(s => s.sector.includes(sectors.find(sec => sec.key === activeSector)?.name.split(' ')[0]))?.avgScore || 0}</p>
-                    <p className="text-slate-500 text-xs">Avg Score</p>
+                    <p className="text-lg md:text-2xl font-bold text-purple-400">{sectorSummary.find(s => s.sector.includes(sectors.find(sec => sec.key === activeSector)?.name.split(' ')[0]))?.avgScore || 0}</p>
+                    <p className="text-slate-500 text-[10px] md:text-xs">Score</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Stock Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-4">
               {filteredStocks.map(stock => (
                 <StockCard key={stock.ticker} stock={stock} showDetails={showDetails} onClick={() => handleStockClick(stock)} />
               ))}
@@ -594,81 +692,124 @@ export default function AIDashboard() {
 
         {activeTab === 'opportunities' && (
           <>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            {/* Horizontal scroll container for mobile, grid for desktop */}
+            <div className="flex gap-3 md:gap-4 overflow-x-auto pb-3 scrollbar-hide scroll-smooth-x -mx-3 px-3 md:mx-0 md:px-0 md:grid md:grid-cols-3 mb-4 md:mb-6">
               {/* High Growth */}
-              <div className="bg-gradient-to-br from-emerald-900/20 to-slate-900/40 backdrop-blur-sm rounded-2xl p-5 border border-emerald-500/20">
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-emerald-400" />
+              <div className="flex-shrink-0 w-[85vw] md:w-auto bg-gradient-to-br from-emerald-900/20 to-slate-900/40 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 md:p-5 border border-emerald-500/20">
+                <h3 className="text-base md:text-lg font-semibold text-white mb-3 md:mb-4 flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-emerald-400" />
                   Highest Growth
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-2 md:space-y-3">
                   {Object.values(stocksData).flat()
                     .filter(s => s.revenueGrowth)
                     .sort((a, b) => b.revenueGrowth - a.revenueGrowth)
                     .slice(0, 6)
                     .map(stock => (
-                      <div key={stock.ticker} className="flex items-center justify-between p-3 bg-slate-800/40 rounded-lg">
-                        <div>
-                          <p className="text-white font-medium">{stock.name}</p>
-                          <p className="text-slate-500 text-xs">{stock.ticker}</p>
+                      <div key={stock.ticker} className="flex items-center justify-between p-2 md:p-3 bg-slate-800/40 rounded-lg gap-2">
+                        <div className="min-w-0">
+                          <p className="text-white font-medium text-sm md:text-base truncate">{stock.name}</p>
+                          <p className="text-slate-500 text-[10px] md:text-xs">{stock.ticker}</p>
                         </div>
-                        <span className="text-emerald-400 font-bold">+{stock.revenueGrowth}%</span>
+                        <span className="text-emerald-400 font-bold text-sm md:text-base flex-shrink-0">+{stock.revenueGrowth}%</span>
                       </div>
                     ))}
                 </div>
               </div>
 
               {/* Best Value */}
-              <div className="bg-gradient-to-br from-cyan-900/20 to-slate-900/40 backdrop-blur-sm rounded-2xl p-5 border border-cyan-500/20">
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                  <DollarSign className="w-5 h-5 text-cyan-400" />
+              <div className="flex-shrink-0 w-[85vw] md:w-auto bg-gradient-to-br from-cyan-900/20 to-slate-900/40 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 md:p-5 border border-cyan-500/20">
+                <h3 className="text-base md:text-lg font-semibold text-white mb-3 md:mb-4 flex items-center gap-2">
+                  <DollarSign className="w-4 h-4 md:w-5 md:h-5 text-cyan-400" />
                   Best Value (Low P/E)
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-2 md:space-y-3">
                   {Object.values(stocksData).flat()
                     .filter(s => s.forwardPE && s.forwardPE > 0 && s.forwardPE < 100)
                     .sort((a, b) => a.forwardPE - b.forwardPE)
                     .slice(0, 6)
                     .map(stock => (
-                      <div key={stock.ticker} className="flex items-center justify-between p-3 bg-slate-800/40 rounded-lg">
-                        <div>
-                          <p className="text-white font-medium">{stock.name}</p>
-                          <p className="text-slate-500 text-xs">{stock.ticker}</p>
+                      <div key={stock.ticker} className="flex items-center justify-between p-2 md:p-3 bg-slate-800/40 rounded-lg gap-2">
+                        <div className="min-w-0">
+                          <p className="text-white font-medium text-sm md:text-base truncate">{stock.name}</p>
+                          <p className="text-slate-500 text-[10px] md:text-xs">{stock.ticker}</p>
                         </div>
-                        <span className="text-cyan-400 font-bold">{stock.forwardPE}x</span>
+                        <span className="text-cyan-400 font-bold text-sm md:text-base flex-shrink-0">{stock.forwardPE}x</span>
                       </div>
                     ))}
                 </div>
               </div>
 
               {/* Highest Upside */}
-              <div className="bg-gradient-to-br from-purple-900/20 to-slate-900/40 backdrop-blur-sm rounded-2xl p-5 border border-purple-500/20">
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                  <ArrowUpRight className="w-5 h-5 text-purple-400" />
+              <div className="flex-shrink-0 w-[85vw] md:w-auto bg-gradient-to-br from-purple-900/20 to-slate-900/40 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 md:p-5 border border-purple-500/20">
+                <h3 className="text-base md:text-lg font-semibold text-white mb-3 md:mb-4 flex items-center gap-2">
+                  <ArrowUpRight className="w-4 h-4 md:w-5 md:h-5 text-purple-400" />
                   Highest Upside
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-2 md:space-y-3">
                   {Object.values(stocksData).flat()
                     .filter(s => s.upside)
                     .sort((a, b) => b.upside - a.upside)
                     .slice(0, 6)
                     .map(stock => (
-                      <div key={stock.ticker} className="flex items-center justify-between p-3 bg-slate-800/40 rounded-lg">
-                        <div>
-                          <p className="text-white font-medium">{stock.name}</p>
-                          <p className="text-slate-500 text-xs">{stock.ticker}</p>
+                      <div key={stock.ticker} className="flex items-center justify-between p-2 md:p-3 bg-slate-800/40 rounded-lg gap-2">
+                        <div className="min-w-0">
+                          <p className="text-white font-medium text-sm md:text-base truncate">{stock.name}</p>
+                          <p className="text-slate-500 text-[10px] md:text-xs">{stock.ticker}</p>
                         </div>
-                        <span className="text-purple-400 font-bold">+{stock.upside}%</span>
+                        <span className="text-purple-400 font-bold text-sm md:text-base flex-shrink-0">+{stock.upside}%</span>
                       </div>
                     ))}
                 </div>
               </div>
             </div>
 
-            {/* Risk/Reward Analysis */}
-            <div className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-sm rounded-2xl p-5 border border-slate-700/30">
-              <h3 className="text-lg font-semibold text-white mb-4">Risk/Reward Analysis by Score</h3>
-              <div className="overflow-x-auto">
+            {/* Risk/Reward Analysis - Cards on mobile, table on desktop */}
+            <div className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 md:p-5 border border-slate-700/30">
+              <h3 className="text-base md:text-lg font-semibold text-white mb-3 md:mb-4">Risk/Reward Analysis by Score</h3>
+
+              {/* Mobile: Cards */}
+              <div className="md:hidden space-y-2">
+                {Object.values(stocksData).flat()
+                  .sort((a, b) => b.score - a.score)
+                  .slice(0, 10)
+                  .map(stock => (
+                    <div key={stock.ticker} className="bg-slate-800/40 rounded-lg p-3">
+                      <div className="flex items-center justify-between mb-2">
+                        <div>
+                          <p className="text-white font-medium text-sm">{stock.name}</p>
+                          <p className="text-slate-500 text-[10px]">{stock.ticker}</p>
+                        </div>
+                        <span className="inline-flex items-center justify-center px-2 py-1 rounded bg-gradient-to-r from-purple-500/20 to-cyan-500/20 text-sm font-bold text-purple-300">{stock.score}</span>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 text-[10px]">
+                        <div>
+                          <p className="text-slate-500">Upside</p>
+                          <p className={`font-medium ${stock.upside > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                            {stock.upside > 0 ? '+' : ''}{stock.upside}%
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-slate-500">Growth</p>
+                          <p className="text-emerald-400 font-medium">{stock.revenueGrowth ? `+${stock.revenueGrowth}%` : 'N/A'}</p>
+                        </div>
+                        <div>
+                          <p className="text-slate-500">Rating</p>
+                          <p className={`font-medium ${
+                            stock.analystRating?.includes('Strong Buy') ? 'text-emerald-400' :
+                            stock.analystRating?.includes('Buy') ? 'text-green-400' :
+                            'text-yellow-400'
+                          }`}>
+                            {stock.analystRating?.replace('Strong ', 'S.') || 'N/A'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+
+              {/* Desktop: Table */}
+              <div className="hidden md:block overflow-x-auto">
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-slate-700/50">
@@ -868,13 +1009,13 @@ export default function AIDashboard() {
         )}
 
         {/* Footer */}
-        <div className="mt-8 pt-6 border-t border-slate-800/50 text-center">
-          <p className="text-slate-500 text-xs">
+        <div className="mt-6 md:mt-8 pt-4 md:pt-6 border-t border-slate-800/50 text-center pb-4">
+          <p className="text-slate-500 text-[10px] md:text-xs px-2">
             Data sourced from public filings, analyst reports, and market research as of January 2026.
-            This dashboard is for informational purposes only and does not constitute investment advice.
+            For informational purposes only.
           </p>
-          <p className="text-slate-600 text-xs mt-2">
-            Built with deep research across 80+ AI infrastructure assets including stocks, ETFs, commodities, and crypto
+          <p className="text-slate-600 text-[10px] md:text-xs mt-1 md:mt-2">
+            90+ AI infrastructure assets tracked
           </p>
         </div>
       </div>

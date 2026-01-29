@@ -10,6 +10,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 
 // Import stock data - in a real app this would come from an API/context
 import { stocksData } from '../data/stocksData';
+import CommandPalette from '../components/CommandPalette';
 
 const StockDetailPage = () => {
   const { ticker } = useParams();
@@ -87,29 +88,32 @@ const StockDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-950">
+      <CommandPalette />
+
       {/* Header */}
       <header className="sticky top-0 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 z-40">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
+        <div className="max-w-7xl mx-auto px-3 md:px-4 py-3 md:py-4">
+          <div className="flex items-center gap-2 md:gap-4">
             <button
               onClick={() => navigate('/')}
-              className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
+              className="p-2.5 hover:bg-slate-800 active:bg-slate-700 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+              aria-label="Go back"
             >
               <ArrowLeft className="w-5 h-5 text-slate-400" />
             </button>
-            <div className="flex-1">
-              <div className="flex items-center gap-3">
-                <h1 className="text-xl font-bold text-white">{stock.name}</h1>
-                <span className="px-2 py-0.5 bg-slate-700/50 rounded text-slate-300 text-sm font-mono">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 md:gap-3 flex-wrap">
+                <h1 className="text-base md:text-xl font-bold text-white truncate">{stock.name}</h1>
+                <span className="px-1.5 md:px-2 py-0.5 bg-slate-700/50 rounded text-slate-300 text-xs md:text-sm font-mono">
                   {stock.ticker}
                 </span>
-                <span className={`px-2 py-0.5 rounded text-xs font-medium ${getRatingColor(stock.analystRating)} bg-slate-800`}>
+                <span className={`px-1.5 md:px-2 py-0.5 rounded text-[10px] md:text-xs font-medium ${getRatingColor(stock.analystRating)} bg-slate-800 hidden sm:inline`}>
                   {stock.analystRating}
                 </span>
               </div>
             </div>
-            <div className={`px-4 py-2 rounded-xl border ${getScoreBg(stock.score)}`}>
-              <div className={`text-xl font-bold bg-gradient-to-r ${getScoreColor(stock.score)} bg-clip-text text-transparent`}>
+            <div className={`px-3 md:px-4 py-1.5 md:py-2 rounded-xl border flex-shrink-0 ${getScoreBg(stock.score)}`}>
+              <div className={`text-lg md:text-xl font-bold bg-gradient-to-r ${getScoreColor(stock.score)} bg-clip-text text-transparent`}>
                 {stock.score}
               </div>
             </div>
@@ -119,25 +123,25 @@ const StockDetailPage = () => {
 
       {/* Price Banner */}
       <div className="bg-gradient-to-r from-slate-900 to-slate-800 border-b border-slate-700/50">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex flex-wrap items-end justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-3 md:px-4 py-4 md:py-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 md:gap-4">
             <div>
-              <div className="flex items-baseline gap-3 mb-1">
-                <span className="text-4xl font-bold text-white">${stock.price}</span>
-                <span className={`flex items-center gap-1 text-lg ${stock.upside >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                  {stock.upside >= 0 ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
+              <div className="flex items-baseline gap-2 md:gap-3 mb-1">
+                <span className="text-2xl md:text-4xl font-bold text-white">${stock.price}</span>
+                <span className={`flex items-center gap-1 text-base md:text-lg ${stock.upside >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                  {stock.upside >= 0 ? <TrendingUp className="w-4 h-4 md:w-5 md:h-5" /> : <TrendingDown className="w-4 h-4 md:w-5 md:h-5" />}
                   {stock.upside >= 0 ? '+' : ''}{stock.upside}%
                 </span>
               </div>
-              <p className="text-slate-400">
-                Price Target: <span className="text-white font-semibold">${stock.priceTarget}</span>
-                <span className="text-slate-500 ml-2">|</span>
-                <span className="ml-2">Market Cap: <span className="text-white font-semibold">
+              <p className="text-slate-400 text-sm md:text-base">
+                Target: <span className="text-white font-semibold">${stock.priceTarget}</span>
+                <span className="text-slate-500 mx-1 md:mx-2">•</span>
+                <span>Cap: <span className="text-white font-semibold">
                   {stock.marketCap >= 1000 ? `$${(stock.marketCap / 1000).toFixed(1)}T` : `$${stock.marketCap}B`}
                 </span></span>
               </p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex gap-2 md:gap-3 overflow-x-auto scrollbar-hide -mx-3 px-3 md:mx-0 md:px-0">
               <QuickStat label="P/E" value={stock.peRatio || 'N/A'} />
               <QuickStat label="Fwd P/E" value={stock.forwardPE || 'N/A'} />
               <QuickStat label="Growth" value={stock.revenueGrowth ? `${stock.revenueGrowth}%` : 'N/A'} positive={stock.revenueGrowth > 0} />
@@ -147,21 +151,21 @@ const StockDetailPage = () => {
       </div>
 
       {/* Tab Navigation */}
-      <div className="bg-slate-900 border-b border-slate-800 sticky top-[73px] z-30">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex gap-1 overflow-x-auto">
+      <div className="bg-slate-900 border-b border-slate-800 sticky top-[57px] md:top-[73px] z-30">
+        <div className="max-w-7xl mx-auto px-3 md:px-4">
+          <div className="flex gap-0.5 md:gap-1 overflow-x-auto scrollbar-hide">
             {tabs.map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-3 border-b-2 transition-colors whitespace-nowrap ${
+                className={`flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2.5 md:py-3 border-b-2 transition-colors whitespace-nowrap min-h-[44px] text-sm md:text-base ${
                   activeTab === tab.id
                     ? 'border-purple-500 text-white'
-                    : 'border-transparent text-slate-400 hover:text-slate-200'
+                    : 'border-transparent text-slate-400 hover:text-slate-200 active:text-slate-100'
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
-                {tab.label}
+                <span className="hidden sm:inline">{tab.label}</span>
               </button>
             ))}
           </div>
@@ -169,7 +173,7 @@ const StockDetailPage = () => {
       </div>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-6">
+      <main className="max-w-7xl mx-auto px-3 md:px-4 py-4 md:py-6 pb-safe">
         {activeTab === 'overview' && (
           <OverviewTab stock={stock} radarData={radarData} />
         )}
@@ -199,9 +203,9 @@ const StockDetailPage = () => {
 
 // Quick Stat Component
 const QuickStat = ({ label, value, positive }) => (
-  <div className="px-4 py-2 bg-slate-800/50 rounded-lg border border-slate-700/50">
-    <div className="text-xs text-slate-400 mb-0.5">{label}</div>
-    <div className={`font-semibold ${
+  <div className="px-3 md:px-4 py-2 bg-slate-800/50 rounded-lg border border-slate-700/50 flex-shrink-0">
+    <div className="text-[10px] md:text-xs text-slate-400 mb-0.5">{label}</div>
+    <div className={`font-semibold text-sm md:text-base ${
       positive !== undefined ? (positive ? 'text-emerald-400' : 'text-red-400') : 'text-white'
     }`}>
       {value}

@@ -1,8 +1,14 @@
 import AIDashboard from './AIDashboard'
+import CommandPalette from './components/CommandPalette'
 import './index.css'
 
 function App() {
-  return <AIDashboard />
+  return (
+    <>
+      <CommandPalette />
+      <AIDashboard />
+    </>
+  )
 }
 
 export default App
